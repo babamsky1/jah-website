@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
+import { Link } from "react-router-dom";
 import action from "../assets/action.jpeg";
 import meetPhoto from "../assets/meet.jpg";
 import Footer from "../components/Footer";
@@ -118,13 +119,13 @@ function CourseTab(props: {
               {p}
             </p>
           ))}
-          <a
+          <Link
             id="book"
             className="mt-4 inline-block rounded-[10px] bg-brand px-[22px] py-3 text-[1.125rem] font-semibold text-white hover:brightness-90"
-            href="/booking"
+            to="/booking"
           >
             Book a session
-          </a>
+          </Link>
         </div>
         <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-black">
           <iframe
@@ -532,12 +533,12 @@ function StrategySession() {
             Stop Doing Random Things That Make No Sense. Start Strategizing
             &amp; Execute What Works.
           </p>
-          <a
+          <Link
             className="mt-4 inline-block rounded-[10px] bg-brand px-[22px] py-3 text-base font-semibold text-white hover:brightness-90"
-            href="/booking"
+            to="/booking"
           >
             Book a session
-          </a>
+          </Link>
         </div>
       </section>
     </>

@@ -6,6 +6,7 @@ import spotifyIcon from "../assets/spotify.png";
 import trainerCourseImg from "../assets/trainerCourse.jpg";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import { Link } from "react-router-dom";
 
 /* ---------- Assets ---------- */
 const IMG = {
@@ -69,12 +70,12 @@ export default function Main() {
             offering gentle guidance that makes progress feel grounded and
             doable.
           </p>
-          <a
+          <Link
             className="inline-block rounded-[10px] bg-brand px-[22px] py-3 text-base font-semibold text-white hover:brightness-90"
-            href="/booking"
+            to="/booking"
           >
             Book a session
-          </a>
+          </Link>
         </div>
       </section>
 
@@ -95,12 +96,12 @@ export default function Main() {
                 {p.title}
               </h3>
               <p className="min-h-[42px] text-sm text-muted">{p.text}</p>
-              <a
+              <Link
                 className="mt-2 inline-block rounded-[10px] bg-brand px-[22px] py-3 text-base font-semibold text-white hover:brightness-90"
-                href={p.href}
+                to={p.href}
               >
                 {p.cta}
-              </a>
+              </Link>
             </article>
           ))}
         </div>
@@ -168,12 +169,12 @@ export default function Main() {
               details, audience, and what you're looking for. We'll take it from
               there.
             </p>
-            <a
+            <Link
               className="mt-4 inline-block rounded-[10px] bg-brand px-[22px] py-3 text-base font-semibold text-white hover:brightness-90"
-              href="/beyond"
+              to="/beyond"
             >
               Schedule now
-            </a>
+            </Link>
           </div>
           <img
             src={IMG.speaking}

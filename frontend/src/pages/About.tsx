@@ -2,6 +2,7 @@ import crowdImg from "../assets/crowd.jpg";
 import workshopImg from "../assets/workshop.jpg";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import { Link } from "react-router-dom";
 
 /* ---------- Assets & Links ---------- */
 const CONTACT = "mailto:REPLACE_ME@example.com";
@@ -145,18 +146,18 @@ export default function About() {
                 fitness decisions they can actually stick with.
               </p>
               <div className="mt-7 flex flex-wrap items-center gap-3">
-                <a
+                <Link
                   className="inline-block rounded-[10px] bg-brand px-[22px] py-3 text-base font-semibold text-white hover:brightness-90"
-                  href="/booking"
+                  to="/booking"
                 >
                   Book a Session
-                </a>
-                <a
+                </Link>
+                <Link
                   className="inline-block rounded-[10px] border border-ink/15 bg-white px-[22px] py-3 text-base font-semibold text-ink hover:border-ink/30"
-                  href="/programs"
+                  to="/programs"
                 >
                   Explore Programs
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -280,30 +281,42 @@ export default function About() {
             </h2>
           </div>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-            {PATHS.map((p) => (
-              <a
-                key={p.title}
-                href={p.href}
-                className="group flex flex-col justify-between rounded-2xl border border-ink/15 bg-white p-6 transition hover:border-ink/35"
-              >
-                <div>
-                  <div
-                    className={`mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl ${p.badge}`}
-                  >
-                    <PathIcon name={p.icon} />
+            {PATHS.map((p) => {
+              const classes =
+                "group flex flex-col justify-between rounded-2xl border border-ink/15 bg-white p-6 transition hover:border-ink/35";
+              const content = (
+                <>
+                  <div>
+                    <div
+                      className={`mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl ${p.badge}`}
+                    >
+                      <PathIcon name={p.icon} />
+                    </div>
+                    <h3 className="mb-1.5 text-lg font-bold text-ink">
+                      {p.title}
+                    </h3>
+                    <p className="text-sm leading-relaxed text-muted">
+                      {p.body}
+                    </p>
                   </div>
-                  <h3 className="mb-1.5 text-lg font-bold text-ink">
-                    {p.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-muted">{p.body}</p>
-                </div>
-                <span
-                  className={`mt-5 inline-flex items-center gap-1 text-sm font-bold ${p.color} group-hover:underline`}
-                >
-                  {p.cta} →
-                </span>
-              </a>
-            ))}
+                  <span
+                    className={`mt-5 inline-flex items-center gap-1 text-sm font-bold ${p.color} group-hover:underline`}
+                  >
+                    {p.cta} →
+                  </span>
+                </>
+              );
+
+              return /^(https?:|mailto:)/.test(p.href) ? (
+                <a key={p.title} href={p.href} className={classes}>
+                  {content}
+                </a>
+              ) : (
+                <Link key={p.title} to={p.href} className={classes}>
+                  {content}
+                </Link>
+              );
+            })}
           </div>
         </section>
 

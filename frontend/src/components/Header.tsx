@@ -1,3 +1,4 @@
+import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 
 const links: [string, string][] = [
@@ -10,34 +11,39 @@ const links: [string, string][] = [
 export default function Header({ active }: { active: string }) {
   return (
     <header className="site-wrap flex flex-wrap items-center justify-between gap-3 py-5">
-      <a
-        href="/"
+      <Link
+        to="/"
         className="flex items-center gap-2.5 text-[1.375rem] font-bold"
       >
         <img src={logo} alt="" className="h-9 w-auto object-contain" />
         Jah Agcaoili
-      </a>
+      </Link>
       <nav
         aria-label="Main"
         className="flex flex-wrap items-center gap-3.5 md:gap-7"
       >
-        {links.map(([label, href]) => (
-          <a
+        {links.map(([label, to]) => (
+          <NavLink
             key={label}
-            href={href}
-            className={`border-b-2 pb-1 text-[0.8125rem] font-medium uppercase tracking-[0.04em] ${
-              label === active ? "border-brand" : "border-transparent"
-            }`}
+            to={to}
+            end={to === "/"}
+            className={({ isActive }) =>
+              `border-b-2 pb-1 text-[0.8125rem] font-medium uppercase tracking-[0.04em] ${
+                isActive || label === active
+                  ? "border-brand"
+                  : "border-transparent"
+              }`
+            }
           >
             {label}
-          </a>
+          </NavLink>
         ))}
-        <a
-          href="/booking"
+        <Link
+          to="/booking"
           className="rounded-[10px] bg-brand px-4 py-2 text-[0.8125rem] font-semibold tracking-normal text-white normal-case hover:brightness-90"
         >
           Book a Session
-        </a>
+        </Link>
       </nav>
     </header>
   );

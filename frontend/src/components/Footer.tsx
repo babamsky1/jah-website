@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Link } from "react-router-dom";
 import logo1 from "../assets/logo_white.png";
 
 const field = "w-full rounded-lg border-0 bg-field p-2.5 text-base text-ink";
@@ -119,36 +120,36 @@ export default function Footer() {
           </div>
           <ul className="m-0 list-none p-0 text-sm leading-8">
             <li>
-              <a href="/">Home</a>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <a href="/programs">Programs</a>
+              <Link to="/programs">Programs</Link>
               <ul className="m-0 list-none p-0 pl-5">
                 <li>
-                  <a href="/programs#body-transformation">
+                  <Link to="/programs#body-transformation">
                     Body Transformation Course
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/programs#trainer-crash-course">
+                  <Link to="/programs#trainer-crash-course">
                     Personal Trainer Crash Course
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/programs#strategy-session">
+                  <Link to="/programs#strategy-session">
                     Fitness &amp; Performance Course
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </li>
             <li>
-              <a href="/about">About</a>
+              <Link to="/about">About</Link>
             </li>
             <li>
-              <a href="/beyond">Beyond</a>
+              <Link to="/beyond">Beyond</Link>
             </li>
             <li>
-              <a href="/booking">Book a Session</a>
+              <Link to="/booking">Book a Session</Link>
             </li>
           </ul>
           <form onSubmit={(e) => e.preventDefault()}>
