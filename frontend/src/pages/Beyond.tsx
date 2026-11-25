@@ -1,225 +1,21 @@
-import React from "react";
+import crowdImg from "../assets/crowd.jpg";
+import workshopImg from "../assets/workshop.jpg";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 
-/* ---------- Theme ---------- */
-const C = {
-  teal: "#1FB6C9",
-  gold: "#D9A441",
-  red: "#EF3E2D",
-  deepTeal: "#1D4B52",
-  midTeal: "#2A7A78",
-  dark: "#111111",
-  text: "#111111",
-  mute: "#555555",
-  field: "#D9D9D9",
-};
-
-/* ---------- Replace with your real assets ---------- */
-const IMG = {
-  logo: "/images/logo.svg",
-  hero: "/images/speaking-hero.png",
-  crowd: "/images/crowd.jpg",
-  workshop: "/images/workshop.jpg",
-};
+/* ---------- Links ---------- */
 const CONTACT = "mailto:REPLACE_ME@example.com";
 
-const CSS = `
-*{box-sizing:border-box}
-body{margin:0;font-family:'Inter',system-ui,sans-serif;color:${C.text}}
-a{color:inherit;text-decoration:none}
-.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
-.btn{display:inline-block;background:${C.teal};color:#fff;font-weight:600;border:0;border-radius:10px;padding:12px 22px;cursor:pointer;font-size:16px}
-.btn:hover{filter:brightness(.92)}
-.btn.dark{background:#111;width:100%;text-align:center;padding:10px}
-.btn:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid ${C.teal};outline-offset:2px}
-.nav{display:flex;gap:28px;align-items:center}
-.nav a{font-size:13px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;padding-bottom:4px;border-bottom:2px solid transparent}
-.nav a.on{border-color:${C.teal}}
-.split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;text-align:center}
-.foot{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:32px}
-@media(max-width:800px){.split,.grid3,.grid2,.steps,.foot{grid-template-columns:1fr}.nav{gap:14px;flex-wrap:wrap}.hero-img{display:none}}
-`;
+const tones = {
+  brand: { bg: "bg-brand", text: "text-brand" },
+  gold: { bg: "bg-gold", text: "text-gold" },
+  danger: { bg: "bg-danger", text: "text-danger" },
+  deep: { bg: "bg-brand-deep", text: "text-brand-deep" },
+  mid: { bg: "bg-brand-mid", text: "text-brand-mid" },
+} as const;
+type Tone = keyof typeof tones;
 
-/* ---------- Shared pieces ---------- */
-function Header({ active }: { active: string }) {
-  const links: [string, string][] = [
-    ["Home", "/"],
-    ["Programs", "/programs"],
-    ["Beyond", "/beyond"],
-    ["About", "/about"],
-  ];
-  return (
-    <header
-      className="wrap"
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "20px 24px",
-        flexWrap: "wrap",
-        gap: 12,
-      }}
-    >
-      <a
-        href="/"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          fontWeight: 700,
-          fontSize: 22,
-        }}
-      >
-        <img src={IMG.logo} alt="" height={30} /> Jah Agcaoili
-      </a>
-      <nav className="nav" aria-label="Main">
-        {links.map(([l, h]) => (
-          <a key={l} href={h} className={l === active ? "on" : ""}>
-            {l}
-          </a>
-        ))}
-        <a
-          href="/programs#book"
-          className="btn"
-          style={{
-            fontSize: 13,
-            padding: "8px 16px",
-            textTransform: "none",
-            letterSpacing: 0,
-            borderBottom: 0,
-          }}
-        >
-          Book a Session
-        </a>
-      </nav>
-    </header>
-  );
-}
-
-function Footer() {
-  const field: React.CSSProperties = {
-    width: "100%",
-    background: C.field,
-    border: 0,
-    borderRadius: 8,
-    padding: 10,
-    font: "inherit",
-  };
-  const label: React.CSSProperties = {
-    fontSize: 13,
-    display: "block",
-    marginBottom: 4,
-  };
-  return (
-    <footer style={{ background: C.dark, color: "#fff", marginTop: 80 }}>
-      <div className="wrap" style={{ padding: "48px 24px" }}>
-        <div style={{ fontSize: 26, fontWeight: 700, marginBottom: 24 }}>
-          Jah Agcaoili
-        </div>
-        <div className="foot">
-          <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-            {["f", "ig", "in", "yt", "sp"].map((s) => (
-              <a
-                key={s}
-                href="#"
-                aria-label={s}
-                style={{
-                  width: 34,
-                  height: 34,
-                  borderRadius: "50%",
-                  background: C.teal,
-                  display: "grid",
-                  placeItems: "center",
-                  fontSize: 12,
-                  fontWeight: 700,
-                }}
-              >
-                {s}
-              </a>
-            ))}
-          </div>
-          <ul
-            style={{
-              listStyle: "none",
-              margin: 0,
-              padding: 0,
-              lineHeight: 2,
-              fontSize: 14,
-            }}
-          >
-            <li>
-              <a href="/">Home</a>
-            </li>
-            <li>
-              <a href="/programs">Programs</a>
-              <ul style={{ listStyle: "none", paddingLeft: 20, margin: 0 }}>
-                <li>
-                  <a href="/programs#body-transformation">
-                    Body Transformation Course
-                  </a>
-                </li>
-                <li>
-                  <a href="/programs#trainer-crash-course">
-                    Personal Trainer Crash Course
-                  </a>
-                </li>
-                <li>
-                  <a href="/programs#strategy-session">
-                    Fitness &amp; Performance Course
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="/about">About</a>
-            </li>
-            <li>
-              <a href="/beyond">Beyond</a>
-            </li>
-            <li>
-              <a href="/programs#book">Book a Session</a>
-            </li>
-          </ul>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <label style={label}>
-              Name
-              <input style={field} name="name" />
-            </label>
-            <label style={label}>
-              Email Address
-              <input style={field} type="email" name="email" />
-            </label>
-            <label style={label}>
-              Message
-              <textarea style={{ ...field, height: 90 }} name="message" />
-            </label>
-            <div style={{ textAlign: "right", marginTop: 8 }}>
-              <button
-                className="btn"
-                style={{ fontSize: 12, padding: "8px 14px" }}
-              >
-                Send Message
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div
-        style={{
-          background: C.teal,
-          textAlign: "center",
-          fontSize: 11,
-          letterSpacing: ".3em",
-          padding: 8,
-        }}
-      >
-        Jah Agcaoili Copyright © 2026
-      </div>
-    </footer>
-  );
-}
+const small = "text-sm leading-[1.6] text-ink";
 
 /* ---------- Data ---------- */
 const EXPERTISE = [
@@ -234,34 +30,101 @@ const EXPERTISE = [
   "Corporate Fitness",
 ];
 
+/* ---------- SVG icons ---------- */
+function CheckCircle({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      className={`h-5 w-5 shrink-0 ${className}`}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M21.5 12a9.5 9.5 0 1 1-4.2-7.9" />
+      <path d="M8 11.5l4 4 9-9.5" />
+    </svg>
+  );
+}
+
+function ChatIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      className={`mx-auto h-8 w-8 ${className}`}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M4 4h16v12H9l-5 4V4z" />
+    </svg>
+  );
+}
+
+function PhoneIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      className={`mx-auto h-8 w-8 ${className}`}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" />
+    </svg>
+  );
+}
+
+function GridIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      className={`mx-auto h-8 w-8 ${className}`}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+      <rect x="14" y="14" width="7" height="7" rx="1" />
+    </svg>
+  );
+}
+
 /* ---------- Reusable package card ---------- */
 function Package(props: {
   name: string;
   price: string;
   unit?: string;
   blurb: string;
-  bg: string;
+  tone: Tone;
 }) {
   return (
-    <div
-      style={{
-        background: props.bg,
-        color: "#fff",
-        borderRadius: 16,
-        padding: 22,
-      }}
-    >
-      <div style={{ fontSize: 15 }}>{props.name}</div>
-      <div style={{ fontSize: 36, fontWeight: 700, margin: "6px 0" }}>
+    <div className={`${tones[props.tone].bg} rounded-2xl p-[22px] text-white`}>
+      <div className="text-[0.9375rem]">{props.name}</div>
+      <div className="my-1.5 text-[2.25rem] font-bold">
         {props.price}
         {props.unit && (
-          <span style={{ fontSize: 14, fontWeight: 400 }}> {props.unit}</span>
+          <span className="text-sm font-normal"> {props.unit}</span>
         )}
       </div>
-      <p style={{ fontSize: 12, lineHeight: 1.5, minHeight: 54 }}>
-        {props.blurb}
-      </p>
-      <a className="btn dark" href={CONTACT}>
+      <p className="min-h-[54px] text-xs leading-[1.5]">{props.blurb}</p>
+      <a
+        className="mt-3 block w-full rounded-[10px] bg-ink px-[22px] py-2.5 text-center text-base font-semibold text-white hover:brightness-90"
+        href={CONTACT}
+      >
         Book your session
       </a>
     </div>
@@ -270,29 +133,21 @@ function Package(props: {
 
 function Included({
   items,
-  color,
+  tone,
   title = "What's included",
 }: {
   items: string[];
-  color: string;
+  tone: Tone;
   title?: string;
 }) {
   return (
     <>
-      <h4 style={{ margin: "0 0 8px" }}>{title}</h4>
-      <ul
-        style={{
-          listStyle: "none",
-          padding: 0,
-          margin: 0,
-          fontSize: 14,
-          lineHeight: 1.9,
-        }}
-      >
+      <h4 className="mb-3 font-semibold">{title}</h4>
+      <ul className="m-0 flex list-none flex-col gap-3 p-0 text-sm leading-[1.4]">
         {items.map((i) => (
-          <li key={i}>
-            <span style={{ color, fontWeight: 700, marginRight: 10 }}>✓</span>
-            {i}
+          <li key={i} className="flex items-start gap-3">
+            <CheckCircle className={`${tones[tone].text} mt-px`} />
+            <span>{i}</span>
           </li>
         ))}
       </ul>
@@ -302,62 +157,40 @@ function Included({
 
 /* ---------- Page ---------- */
 export default function Beyond() {
-  const small: React.CSSProperties = {
-    fontSize: 14,
-    lineHeight: 1.6,
-    color: C.text,
-  };
   return (
     <>
-      <style>{CSS}</style>
       <Header active="Beyond" />
 
       {/* Hero */}
-      <section
-        className="wrap split"
-        style={{ paddingTop: 20, overflow: "hidden" }}
-      >
+      <section className="site-wrap grid grid-cols-1 items-center gap-12 overflow-hidden pt-5 md:grid-cols-2">
         <div>
-          <h1
-            style={{
-              fontSize: "clamp(38px,6vw,60px)",
-              lineHeight: 1.05,
-              fontWeight: 600,
-              margin: "0 0 16px",
-            }}
-          >
+          <h1 className="mb-4 text-[clamp(2.375rem,6vw,3.75rem)] font-semibold leading-[1.05]">
             Speaking &amp; Workshop Engagements
           </h1>
-          <p style={{ fontSize: 16, maxWidth: 340 }}>
+          <p className="max-w-[340px] text-base">
             Don't just give your audience more information. Give them better
             ways to think.
           </p>
         </div>
         <img
-          className="hero-img"
-          src={IMG.hero}
+          src={crowdImg}
           alt="Coach Jah speaking"
-          style={{
-            width: "100%",
-            maxHeight: 420,
-            objectFit: "contain",
-            objectPosition: "bottom",
-          }}
+          className="hidden max-h-[420px] w-full object-contain md:block"
         />
       </section>
 
       {/* The Real Score */}
-      <section className="wrap split" style={{ marginTop: 56 }}>
-        <div style={{ ...small, fontSize: 15, lineHeight: 1.7 }}>
-          <h2 style={{ fontSize: 26, fontWeight: 600 }}>The Real Score</h2>
-          <p>
+      <section className="site-wrap mt-14 grid grid-cols-1 items-center gap-12 md:grid-cols-2">
+        <div className="text-[0.9375rem] leading-[1.7]">
+          <h2 className="text-[1.625rem] font-semibold">The Real Score</h2>
+          <p className="mb-4">
             I deliver talks, webinars, workshops, and guest sessions on{" "}
             <b>
               Exercise Science, fitness, sports performance, nutrition, and
               coaching.
             </b>
           </p>
-          <p>
+          <p className="mb-4">
             My approach is simple: take evidence-based concepts and translate
             them into{" "}
             <b>
@@ -371,37 +204,23 @@ export default function Beyond() {
           </p>
         </div>
         <img
-          src={IMG.crowd}
-          alt=""
-          style={{
-            width: "100%",
-            borderRadius: 20,
-            background: "#ddd",
-            aspectRatio: "4/3",
-            objectFit: "cover",
-          }}
+          src={crowdImg}
+          alt="Speaking event audience"
+          className="aspect-[4/3] w-full rounded-[20px] bg-[#ddd] object-cover"
         />
       </section>
 
       {/* Expertise */}
-      <section className="wrap split" style={{ marginTop: 56 }}>
+      <section className="site-wrap mt-14 grid grid-cols-1 items-center gap-12 md:grid-cols-2">
         <img
-          src={IMG.workshop}
-          alt=""
-          style={{
-            width: "100%",
-            borderRadius: 8,
-            background: "#ddd",
-            aspectRatio: "4/3",
-            objectFit: "cover",
-          }}
+          src={workshopImg}
+          alt="Workshop session"
+          className="aspect-[4/3] w-full rounded-lg bg-[#ddd] object-cover"
         />
-        <div style={small}>
-          <h2 style={{ fontSize: 24, fontWeight: 600 }}>
-            My Areas of Expertise
-          </h2>
-          <p>I can speak or facilitate sessions on:</p>
-          <ul style={{ paddingLeft: 20 }}>
+        <div className={small}>
+          <h2 className="text-[1.5rem] font-semibold">My Areas of Expertise</h2>
+          <p className="mb-4">I can speak or facilitate sessions on:</p>
+          <ul className="mb-4 list-disc pl-5">
             {EXPERTISE.map((e) => (
               <li key={e}>{e}</li>
             ))}
@@ -418,33 +237,26 @@ export default function Beyond() {
       </section>
 
       {/* Engagement packages */}
-      <section className="wrap" style={{ marginTop: 72 }}>
-        <h2 style={{ textAlign: "center", fontSize: 24, fontWeight: 600 }}>
+      <section className="site-wrap mt-[72px]">
+        <h2 className="text-center text-2xl font-semibold">
           Engagement Packages
         </h2>
-        <h3
-          style={{
-            textAlign: "center",
-            fontSize: 28,
-            fontWeight: 400,
-            margin: "24px 0",
-          }}
-        >
+        <h3 className="my-6 text-center text-[1.75rem] font-normal">
           Onsite Engagements
         </h3>
 
-        <div className="grid3">
+        <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-3">
           <div>
             <Package
-              bg={C.teal}
+              tone="brand"
               name="Conference Resource Speaker/ Facilitator"
               price="P 15,000.00"
               unit="/topic"
               blurb="For conferences, seminars, conventions, and educational events looking for an invited resource speaker or facilitator."
             />
-            <div style={{ marginTop: 20 }}>
+            <div className="mt-5">
               <Included
-                color={C.teal}
+                tone="brand"
                 items={[
                   "Topic presentation",
                   "Q&A",
@@ -452,10 +264,10 @@ export default function Beyond() {
                   "Participant handout",
                 ]}
               />
-              <p style={small}>
+              <p className={`${small} mt-4`}>
                 Onsite rate, exclusive of transportation allowance and food.
               </p>
-              <p style={small}>
+              <p className={`${small} mt-4`}>
                 For engagements outside Metro Manila, lodging is exclusive and
                 should be arranged or added to the engagement cost.
               </p>
@@ -464,15 +276,15 @@ export default function Beyond() {
 
           <div>
             <Package
-              bg={C.gold}
+              tone="gold"
               name="Exclusive Workshop Facilitation"
               price="P 18,000.00"
               unit="/day"
               blurb="For organizations that want a more focused and interactive learning experience built around their specific needs."
             />
-            <div style={{ marginTop: 20 }}>
+            <div className="mt-5">
               <Included
-                color={C.gold}
+                tone="gold"
                 items={[
                   "Maximum of 3 topics/sessions per day",
                   "Interactive workshop format",
@@ -480,10 +292,10 @@ export default function Beyond() {
                   "Can be customized according to the organization's objectives and audience",
                 ]}
               />
-              <p style={small}>
+              <p className={`${small} mt-4`}>
                 Exclusive of transportation, food, and lodging allowance.
               </p>
-              <p style={small}>
+              <p className={`${small} mt-4`}>
                 This format works well for schools, sports organizations,
                 fitness businesses, professional groups, and organizations
                 looking for a deeper learning experience beyond a traditional
@@ -494,17 +306,17 @@ export default function Beyond() {
 
           <div>
             <Package
-              bg={C.red}
+              tone="danger"
               name="Guest Appearance"
               price="P 12,000.00"
               blurb="For podcasts, media appearances, online shows, organizational programs, and other guesting opportunities."
             />
-            <div style={{ marginTop: 20 }}>
-              <p style={small}>
+            <div className="mt-5">
+              <p className={`${small} mb-4`}>
                 For Metro Manila engagements, the rate is inclusive of
                 transportation and food allowance.
               </p>
-              <p style={small}>
+              <p className={small}>
                 For engagements outside Metro Manila, lodging allowance should
                 be added.
               </p>
@@ -512,28 +324,21 @@ export default function Beyond() {
           </div>
         </div>
 
-        <h3
-          style={{
-            textAlign: "center",
-            fontSize: 28,
-            fontWeight: 400,
-            margin: "64px 0 24px",
-          }}
-        >
+        <h3 className="mb-6 mt-16 text-center text-[1.75rem] font-normal">
           Online Engagements
         </h3>
-        <div className="grid2" style={{ maxWidth: 800, margin: "0 auto" }}>
+        <div className="mx-auto grid max-w-[800px] grid-cols-1 items-start gap-6 md:grid-cols-2">
           <div>
             <Package
-              bg={C.deepTeal}
+              tone="deep"
               name="Online Webinar"
               price="P 15,000.00"
               unit="/topic"
               blurb="For organizations looking for a focused, evidence based online learning session."
             />
-            <div style={{ marginTop: 20 }}>
+            <div className="mt-5">
               <Included
-                color={C.deepTeal}
+                tone="deep"
                 items={[
                   "Topic presentation",
                   "Q&A",
@@ -545,15 +350,15 @@ export default function Beyond() {
           </div>
           <div>
             <Package
-              bg={C.midTeal}
+              tone="mid"
               name="Online Guesting"
               price="P 9,000.00"
               unit="/appearance"
               blurb="For podcasts, online shows, interviews, and other online guesting opportunities."
             />
-            <div style={{ marginTop: 20 }}>
+            <div className="mt-5">
               <Included
-                color={C.midTeal}
+                tone="mid"
                 title="This is for"
                 items={[
                   "Podcasts",
@@ -566,14 +371,7 @@ export default function Beyond() {
             </div>
           </div>
         </div>
-        <p
-          style={{
-            ...small,
-            maxWidth: 720,
-            margin: "32px auto 0",
-            textAlign: "center",
-          }}
-        >
+        <p className={`${small} mx-auto mt-8 max-w-[720px] text-center`}>
           Disclaimer: For online engagements, I primarily accept webinars and
           guest appearances. I personally do not accept multi-activity workshop
           projects in an online format. My preference is to keep online sessions
@@ -582,49 +380,45 @@ export default function Beyond() {
       </section>
 
       {/* How it works */}
-      <section className="wrap" style={{ marginTop: 72 }}>
-        <h2
-          style={{
-            textAlign: "center",
-            fontSize: 28,
-            fontWeight: 600,
-            marginBottom: 32,
-          }}
-        >
+      <section className="site-wrap mt-[72px]">
+        <h2 className="mb-8 text-center text-[1.75rem] font-semibold">
           How It Works
         </h2>
-        <div className="steps">
+        <div className="grid grid-cols-1 gap-8 text-center md:grid-cols-3">
           <div>
-            <div style={{ color: C.teal, fontWeight: 700 }}>STEP 1:</div>
-            <h4 style={{ margin: "4px 0" }}>Tell me what you need</h4>
-            <p style={small}>
+            <ChatIcon className="mb-3 text-brand" />
+            <div className="font-bold text-brand">STEP 1:</div>
+            <h4 className="my-1 font-semibold">Tell me what you need</h4>
+            <p className={small}>
               Send the details of your event, organization, audience, preferred
               topic, format, date, and objectives.
             </p>
           </div>
           <div>
-            <div style={{ color: C.gold, fontWeight: 700 }}>STEP 2:</div>
-            <h4 style={{ margin: "4px 0" }}>Discovery call</h4>
-            <p style={small}>
+            <PhoneIcon className="mb-3 text-gold" />
+            <div className="font-bold text-gold">STEP 2:</div>
+            <h4 className="my-1 font-semibold">Discovery call</h4>
+            <p className={`${small} mb-4`}>
               We'll have a short discovery call to identify your goals, audience
               needs, and the problem you want the session to address.
             </p>
-            <p style={small}>
+            <p className={small}>
               This allows me to determine the most appropriate topic, format,
               and approach for your engagement.
             </p>
           </div>
           <div>
-            <div style={{ color: C.red, fontWeight: 700 }}>STEP 3:</div>
-            <h4 style={{ margin: "4px 0" }}>Build the session</h4>
-            <p style={small}>
+            <GridIcon className="mb-3 text-danger" />
+            <div className="font-bold text-danger">STEP 3:</div>
+            <h4 className="my-1 font-semibold">Build the session</h4>
+            <p className={`${small} mb-4`}>
               Once we've identified what you need, we'll finalize the scope,
               logistics, and deliverables.
             </p>
-            <p style={small}>
+            <p className={small}>
               The goal is not simply to fill your event with another speaker.
             </p>
-            <p style={{ ...small, fontWeight: 700 }}>
+            <p className={`${small} font-bold`}>
               It's to make sure the session is relevant to your audience.
             </p>
           </div>
@@ -632,25 +426,21 @@ export default function Beyond() {
       </section>
 
       {/* CTA */}
-      <section className="wrap split" style={{ marginTop: 72 }}>
-        <h2
-          style={{
-            fontSize: "clamp(34px,5vw,52px)",
-            fontWeight: 500,
-            lineHeight: 1.1,
-            margin: 0,
-          }}
-        >
+      <section className="site-wrap mt-[72px] grid grid-cols-1 items-center gap-12 md:grid-cols-2">
+        <h2 className="text-[clamp(2.125rem,5vw,3.25rem)] font-medium leading-[1.1]">
           Looking for a Fitness &amp; Athletic Performance Resource Person?
         </h2>
-        <div style={{ fontSize: 15, lineHeight: 1.6 }}>
-          <p>
+        <div className="text-[0.9375rem] leading-[1.6]">
+          <p className="mb-4">
             Tell me about your event and what you want your audience to learn.
           </p>
-          <p>
+          <p className="mb-4">
             <b>Let's build a session that makes Exercise Science practical.</b>
           </p>
-          <a className="btn" href={CONTACT}>
+          <a
+            className="inline-block rounded-[10px] bg-brand px-[22px] py-3 text-base font-semibold text-white hover:brightness-90"
+            href={CONTACT}
+          >
             Let's Discuss
           </a>
         </div>

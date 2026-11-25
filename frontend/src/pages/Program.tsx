@@ -1,280 +1,138 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import action from "../assets/action.jpeg";
+import meetPhoto from "../assets/meet.jpg";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 
-/* ---------- Theme ---------- */
-const C = {
-  teal: "#1FB6C9",
-  gold: "#D9A441",
-  dark: "#111111",
-  text: "#111111",
-  mute: "#555555",
-  field: "#D9D9D9",
-};
-
-/* ---------- Replace with your real assets ---------- */
+/* ---------- Assets & links ---------- */
 const IMG = {
-  logo: "/images/logo.svg",
-  strategyHero: "/images/strategy-hero.png",
-  strategyA: "/images/strategy-a.jpg",
-  strategyB: "/images/strategy-b.jpg",
+  strategyHero: action,
+  strategyA: meetPhoto,
+  strategyB: meetPhoto,
 };
+
 // YouTube embed URLs (use the /embed/ID form)
 const VIDEO = {
-  bodyTransformation: "https://www.youtube.com/embed/REPLACE_ME_1",
-  trainerCourse: "https://www.youtube.com/embed/REPLACE_ME_2",
+  bodyTransformation: "https://www.youtube.com/embed/kEd97STL8dY",
+  trainerCourse: "https://www.youtube.com/embed/n5BM2d-4kq8",
 };
 const CALENDLY = "https://calendly.com/REPLACE_ME";
 
-const CSS = `
-*{box-sizing:border-box}
-body{margin:0;font-family:'Inter',system-ui,sans-serif;color:${C.text}}
-a{color:inherit;text-decoration:none}
-.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
-.btn{display:inline-block;background:${C.teal};color:#fff;font-weight:600;border:0;border-radius:10px;padding:12px 22px;cursor:pointer;font-size:16px}
-.btn:hover{filter:brightness(.92)}
-.btn.dark{background:#111;width:100%;text-align:center}
-.btn:focus-visible,a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid ${C.teal};outline-offset:2px}
-.nav{display:flex;gap:28px;align-items:center}
-.nav a{font-size:13px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;padding-bottom:4px;border-bottom:2px solid transparent}
-.nav a.on{border-color:${C.teal}}
-.tabs{display:flex;gap:8px;border-bottom:2px solid #e5e5e5;overflow-x:auto}
-.tab{background:none;border:0;font:inherit;font-size:16px;font-weight:600;padding:14px 20px;cursor:pointer;color:${C.mute};border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap}
-.tab[aria-selected=true]{color:${C.text};border-color:${C.teal}}
-.split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:32px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;text-align:center}
-.foot{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:32px}
-.video{position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000}
-.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.faq button{width:100%;display:flex;justify-content:space-between;background:none;border:0;border-bottom:1px solid #999;padding:16px 4px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;text-align:left}
-@media(max-width:800px){.split,.grid2,.grid3,.foot{grid-template-columns:1fr}.nav{gap:14px;flex-wrap:wrap}.hero-img{display:none}}
-`;
+/* ---------- SVG icons ---------- */
+const stroke = {
+  fill: "none",
+  stroke: "currentColor",
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+  "aria-hidden": true,
+} as const;
+
+function CheckCircle({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      {...stroke}
+      className={`h-5 w-5 shrink-0 ${className}`}
+      viewBox="0 0 24 24"
+      strokeWidth="1.8"
+    >
+      <path d="M21.5 12a9.5 9.5 0 1 1-4.2-7.9" />
+      <path d="M8 11.5l4 4 9-9.5" />
+    </svg>
+  );
+}
+
+function PhoneIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      {...stroke}
+      className={`mx-auto h-8 w-8 ${className}`}
+      viewBox="0 0 24 24"
+      strokeWidth="1.6"
+    >
+      <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" />
+    </svg>
+  );
+}
+
+function CalendarIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      {...stroke}
+      className={`mx-auto h-8 w-8 ${className}`}
+      viewBox="0 0 24 24"
+      strokeWidth="1.6"
+    >
+      <rect x="3.5" y="5" width="17" height="15" rx="2" />
+      <path d="M3.5 10h17M8 3v4M16 3v4M8 14h2M14 14h2" />
+    </svg>
+  );
+}
+
+function ChatIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      {...stroke}
+      className={`mx-auto h-8 w-8 ${className}`}
+      viewBox="0 0 24 24"
+      strokeWidth="1.6"
+    >
+      <path d="M4 4h16v12H9l-5 4V4z" />
+    </svg>
+  );
+}
+
+function ToggleIcon({ open }: { open: boolean }) {
+  return (
+    <svg
+      {...stroke}
+      className="h-6 w-6 shrink-0"
+      viewBox="0 0 24 24"
+      strokeWidth="1.5"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d={open ? "M7.5 12h9" : "M7.5 12h9M12 7.5v9"} />
+    </svg>
+  );
+}
 
 /* ---------- Shared pieces ---------- */
-function Header({ active }: { active: string }) {
-  const links: [string, string][] = [
-    ["Home", "/"],
-    ["Programs", "/programs"],
-    ["Beyond", "/beyond"],
-    ["About", "/about"],
-  ];
-  return (
-    <header
-      className="wrap"
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "20px 24px",
-        flexWrap: "wrap",
-        gap: 12,
-      }}
-    >
-      <a
-        href="/"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          fontWeight: 700,
-          fontSize: 22,
-        }}
-      >
-        <img src={IMG.logo} alt="" height={30} /> Jah Agcaoili
-      </a>
-      <nav className="nav" aria-label="Main">
-        {links.map(([l, h]) => (
-          <a key={l} href={h} className={l === active ? "on" : ""}>
-            {l}
-          </a>
-        ))}
-        <a
-          href="/programs#book"
-          className="btn"
-          style={{
-            fontSize: 13,
-            padding: "8px 16px",
-            textTransform: "none",
-            letterSpacing: 0,
-            borderBottom: 0,
-          }}
-        >
-          Book a Session
-        </a>
-      </nav>
-    </header>
-  );
-}
-
-function Footer() {
-  const field: React.CSSProperties = {
-    width: "100%",
-    background: C.field,
-    border: 0,
-    borderRadius: 8,
-    padding: 10,
-    font: "inherit",
-  };
-  const label: React.CSSProperties = {
-    fontSize: 13,
-    display: "block",
-    marginBottom: 4,
-  };
-  return (
-    <footer style={{ background: C.dark, color: "#fff", marginTop: 80 }}>
-      <div className="wrap" style={{ padding: "48px 24px" }}>
-        <div style={{ fontSize: 26, fontWeight: 700, marginBottom: 24 }}>
-          Jah Agcaoili
-        </div>
-        <div className="foot">
-          <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-            {["f", "ig", "in", "yt", "sp"].map((s) => (
-              <a
-                key={s}
-                href="#"
-                aria-label={s}
-                style={{
-                  width: 34,
-                  height: 34,
-                  borderRadius: "50%",
-                  background: C.teal,
-                  display: "grid",
-                  placeItems: "center",
-                  fontSize: 12,
-                  fontWeight: 700,
-                }}
-              >
-                {s}
-              </a>
-            ))}
-          </div>
-          <ul
-            style={{
-              listStyle: "none",
-              margin: 0,
-              padding: 0,
-              lineHeight: 2,
-              fontSize: 14,
-            }}
-          >
-            <li>
-              <a href="/">Home</a>
-            </li>
-            <li>
-              <a href="/programs">Programs</a>
-              <ul style={{ listStyle: "none", paddingLeft: 20, margin: 0 }}>
-                <li>
-                  <a href="/programs#body-transformation">
-                    Body Transformation Course
-                  </a>
-                </li>
-                <li>
-                  <a href="/programs#trainer-crash-course">
-                    Personal Trainer Crash Course
-                  </a>
-                </li>
-                <li>
-                  <a href="/programs#strategy-session">
-                    Fitness &amp; Performance Course
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="/about">About</a>
-            </li>
-            <li>
-              <a href="/beyond">Beyond</a>
-            </li>
-            <li>
-              <a href="/programs#book">Book a Session</a>
-            </li>
-          </ul>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <label style={label}>
-              Name
-              <input style={field} name="name" />
-            </label>
-            <label style={label}>
-              Email Address
-              <input style={field} type="email" name="email" />
-            </label>
-            <label style={label}>
-              Message
-              <textarea style={{ ...field, height: 90 }} name="message" />
-            </label>
-            <div style={{ textAlign: "right", marginTop: 8 }}>
-              <button
-                className="btn"
-                style={{ fontSize: 12, padding: "8px 14px" }}
-              >
-                Send Message
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div
-        style={{
-          background: C.teal,
-          textAlign: "center",
-          fontSize: 11,
-          letterSpacing: ".3em",
-          padding: 8,
-        }}
-      >
-        Jah Agcaoili Copyright © 2026
-      </div>
-    </footer>
-  );
-}
-
-/* ---------- Tab 1 & 2: free course layout ---------- */
 function CourseTab(props: {
   title: string;
   heading: string;
-  paragraphs: React.ReactNode[];
+  paragraphs: ReactNode[];
   video: string;
   videoTitle: string;
 }) {
   return (
-    <section className="wrap" style={{ paddingTop: 40 }}>
-      <h1
-        style={{
-          fontSize: "clamp(34px,5vw,48px)",
-          fontWeight: 600,
-          margin: "0 0 32px",
-        }}
-      >
+    <section className="site-wrap pt-10">
+      <h1 className="mb-8 text-[clamp(2.125rem,5vw,3rem)] font-semibold">
         {props.title}
       </h1>
-      <div className="split" style={{ alignItems: "start" }}>
+      <div className="grid grid-cols-1 items-start gap-12 md:grid-cols-2">
         <div>
-          <h2
-            style={{
-              fontSize: 22,
-              fontWeight: 600,
-              lineHeight: 1.3,
-              margin: "0 0 16px",
-            }}
-          >
+          <h2 className="mb-4 text-[1.375rem] font-semibold leading-[1.3]">
             {props.heading}
           </h2>
           {props.paragraphs.map((p, i) => (
-            <p key={i} style={{ fontSize: 15, lineHeight: 1.6 }}>
+            <p key={i} className="text-[0.9375rem] leading-[1.6]">
               {p}
             </p>
           ))}
           <a
             id="book"
-            className="btn"
-            href={CALENDLY}
-            style={{ marginTop: 16, fontSize: 18 }}
+            className="mt-4 inline-block rounded-[10px] bg-brand px-[22px] py-3 text-[1.125rem] font-semibold text-white hover:brightness-90"
+            href="/booking"
           >
             Book a session
           </a>
         </div>
-        <div className="video">
-          <iframe src={props.video} title={props.videoTitle} allowFullScreen />
+        <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-black">
+          <iframe
+            className="absolute inset-0 h-full w-full border-0"
+            src={props.video}
+            title={props.videoTitle}
+            allowFullScreen
+          />
         </div>
       </div>
     </section>
@@ -348,86 +206,111 @@ const WORK_ON = [
   "Practical next steps based on your specific situation",
 ];
 
-const FAQ: [string, React.ReactNode][] = [
+const FAQ: [string, ReactNode][] = [
   [
     "Is this coaching?",
     <>
       <b>No. This is strategization.</b>
-      <p>
+      <p className="mt-3">
         A coaching relationship involves ongoing guidance, implementation,
         monitoring, and adjustment. A Strategy Session is different. We assess
         your situation, identify what matters, and develop a direction you can
         execute yourself.
       </p>
-      <p>
+      <p className="mt-3">
         If you need someone to continuously guide and monitor your training,
         nutrition, or progress, that's where 1:1 Coaching comes in.
       </p>
     </>,
   ],
-  ["What happens after the call?", "Add your answer here."],
-  ["Can I message you after the Strategy Session?", "Add your answer here."],
+  [
+    "What happens after the call?",
+    <>
+      <p>
+        You leave with a clear direction: what to keep, change, stop, and start,
+        and the reasoning behind each recommendation.
+      </p>
+      <p className="mt-3">
+        Tier 1 includes one email check-in based on the timeline we set during
+        the session. Tier 2 adds an Implementation Roadmap you can revisit and a
+        Clarity Call for follow-up questions.
+      </p>
+    </>,
+  ],
+  [
+    "Can I message you after the Strategy Session?",
+    <>
+      <p>
+        Use the check-in included in your tier. Tier 1 includes 1 email
+        check-in; Tier 2 includes 1 FREE email check-in and a Clarity Call.
+      </p>
+      <p className="mt-3">
+        Ongoing access and continuous messaging are part of 1:1 Coaching, not a
+        Strategy Session.
+      </p>
+    </>,
+  ],
   [
     "Do I have to strictly follow your recommendations?",
-    "Add your answer here.",
+    <p>
+      No. The goal is for you to understand why a recommendation makes sense for
+      your situation, so you can apply it—and adjust it—with confidence.
+    </p>,
   ],
-  ["Who is this for?", "Add your answer here."],
-  ["Who is this NOT for?", "Add your answer here."],
+  [
+    "Who is this for?",
+    <p>
+      This is for people who already have some training or nutrition experience
+      but feel stuck in a sea of conflicting advice, and want an expert to help
+      them decide what actually applies to them.
+    </p>,
+  ],
+  [
+    "Who is this NOT for?",
+    <p>
+      This isn't for anyone looking for a done-for-you program, continuous
+      day-to-day monitoring, or medical clearance and treatment. Those needs are
+      better served by 1:1 Coaching or an appropriate healthcare professional.
+    </p>,
+  ],
 ];
-
-const Check = ({ color }: { color: string }) => (
-  <span style={{ color, fontWeight: 700, marginRight: 10 }}>✓</span>
-);
 
 function Tier(props: {
   name: string;
   price: string;
   blurb: string;
-  bg: string;
-  color: string;
-  items: React.ReactNode[];
-  note: React.ReactNode;
+  tone: "brand" | "gold";
+  items: ReactNode[];
+  note: ReactNode;
 }) {
+  const card = props.tone === "brand" ? "bg-brand" : "bg-gold";
+  const check = props.tone === "brand" ? "text-brand" : "text-gold";
   return (
     <div>
-      <div
-        style={{
-          background: props.bg,
-          color: "#fff",
-          borderRadius: 20,
-          padding: 24,
-        }}
-      >
-        <div style={{ fontSize: 15 }}>{props.name}</div>
-        <div style={{ fontSize: 40, fontWeight: 700, margin: "6px 0" }}>
+      <div className={`${card} rounded-[20px] p-6 text-white`}>
+        <div className="text-[0.9375rem]">{props.name}</div>
+        <div className="my-1.5 text-[2.5rem] font-bold">
           {props.price}
-          <span style={{ fontSize: 14, fontWeight: 400 }}> /session</span>
+          <span className="text-sm font-normal"> /session</span>
         </div>
-        <p style={{ fontSize: 13, minHeight: 40 }}>{props.blurb}</p>
-        <a className="btn dark" href={CALENDLY}>
+        <p className="min-h-[40px] text-[0.8125rem]">{props.blurb}</p>
+        <a
+          className="mt-4 block w-full rounded-[10px] bg-ink px-[22px] py-3 text-center text-base font-semibold text-white hover:brightness-90"
+          href={CALENDLY}
+        >
           Book your session
         </a>
       </div>
-      <h4 style={{ margin: "20px 0 8px" }}>What's included</h4>
-      <ul
-        style={{
-          listStyle: "none",
-          padding: 0,
-          margin: 0,
-          fontSize: 14,
-          lineHeight: 1.8,
-        }}
-      >
+      <h4 className="mb-3 mt-5 font-semibold">What's included</h4>
+      <ul className="m-0 flex list-none flex-col gap-3 p-0 text-sm leading-[1.4]">
         {props.items.map((it, i) => (
-          <li key={i}>
-            <Check color={props.color} />
-            {it}
+          <li key={i} className="flex items-start gap-3">
+            <CheckCircle className={`${check} mt-px`} />
+            <span>{it}</span>
           </li>
         ))}
       </ul>
-      <p style={{ fontWeight: 600, fontSize: 14, marginTop: 16 }}>
-        {props.note}
-      </p>
+      <p className="mt-5 text-sm font-semibold">{props.note}</p>
     </div>
   );
 }
@@ -437,95 +320,73 @@ function StrategySession() {
   return (
     <>
       {/* Hero */}
-      <section
-        className="wrap split"
-        style={{ paddingTop: 20, overflow: "hidden" }}
-      >
-        <div>
-          <h1
-            style={{
-              fontSize: "clamp(36px,6vw,60px)",
-              lineHeight: 1.05,
-              fontWeight: 600,
-              margin: "0 0 16px",
-            }}
-          >
-            Fitness &amp; Performance Strategy Session
-          </h1>
-          <p style={{ fontSize: 17, maxWidth: 340 }}>
-            Stop Guessing and Confusing Yourself. Start Strategizing.
-          </p>
+      <section className="site-wrap relative overflow-hidden pt-5">
+        <div className="relative grid grid-cols-1 items-end md:grid-cols-2">
+          <div className="relative z-10 self-center pb-10 md:pb-0">
+            <h1 className="mb-4 max-w-[500px] text-[clamp(2.25rem,6vw,3.75rem)] font-semibold leading-[1.05]">
+              Fitness &amp; Performance Strategy Session
+            </h1>
+            <p className="max-w-[500px] text-[1.0625rem]">
+              Stop Guessing and Confusing Yourself. Start Strategizing.
+            </p>
+          </div>
+          <img
+            className="relative z-0 hidden h-[440px] w-full object-contain object-bottom md:-ml-10 md:block"
+            src={IMG.strategyHero}
+            alt=""
+          />
         </div>
-        <img
-          className="hero-img"
-          src={IMG.strategyHero}
-          alt=""
-          style={{
-            width: "100%",
-            maxHeight: 420,
-            objectFit: "contain",
-            objectPosition: "bottom",
-          }}
-        />
       </section>
 
       {/* Real talk */}
-      <section className="wrap split" style={{ marginTop: 56 }}>
-        <div style={{ fontSize: 15, lineHeight: 1.7 }}>
-          <h2 style={{ fontSize: 28, fontWeight: 600 }}>Real Talk</h2>
-          <p>
+      <section className="site-wrap mt-14 grid grid-cols-1 items-center gap-12 md:grid-cols-2">
+        <div className="text-[0.9375rem] leading-[1.7]">
+          <h2 className="mb-2 text-[1.75rem] font-semibold">Real Talk</h2>
+          <p className="mb-4">
             You don't need more fitness information.{" "}
             <b>You need to know what actually applies to you.</b> If you've
             consumed countless fitness videos, read articles, tried different
             approaches, and still find yourself unsure about what to do next,
             this session is for you.
           </p>
-          <p>
+          <p className="mb-4">
             The Fitness &amp; Performance Strategy Session is a 1:1 consultation
             designed to help you make sense of your specific situation, identify
             what actually matters, and build a practical strategy you can
             execute.
           </p>
-          <p>
+          <p className="mb-4">
             We'll look at your situation, your goals, your current approach, and
             the things that may be getting in the way. Then we'll determine what
             you should <b>keep, change, stop, or start doing.</b>
           </p>
-          <p>This isn't about giving you another generic fitness program.</p>
-          <p style={{ fontSize: 20, fontWeight: 600 }}>
+          <p className="mb-4">
+            This isn't about giving you another generic fitness program.
+          </p>
+          <p className="text-[1.25rem] font-semibold">
             It's about giving you CLARITY.
           </p>
         </div>
         <img
+          className="aspect-square w-full rounded-[20px] bg-[#ddd] object-cover"
           src={IMG.strategyA}
           alt=""
-          style={{
-            width: "100%",
-            borderRadius: 20,
-            background: "#ddd",
-            aspectRatio: "4/3",
-            objectFit: "cover",
-          }}
         />
       </section>
 
       {/* What we'll work on */}
-      <section className="wrap split" style={{ marginTop: 56 }}>
+      <section className="site-wrap mt-14 grid grid-cols-1 items-center gap-12 md:grid-cols-2">
         <img
+          className="aspect-square w-full rounded-[20px] bg-[#ddd] object-cover"
           src={IMG.strategyB}
           alt=""
-          style={{
-            width: "100%",
-            borderRadius: 20,
-            background: "#ddd",
-            aspectRatio: "4/3",
-            objectFit: "cover",
-          }}
         />
-        <div style={{ fontSize: 14, lineHeight: 1.7 }}>
-          <h2 style={{ fontSize: 26, fontWeight: 600 }}>What we'll work on</h2>
-          <p>Depending on your situation, we may discuss:</p>
-          <ul style={{ paddingLeft: 20 }}>
+        <div className="text-sm leading-[1.7]">
+          <h2 className="mb-2 text-[1.625rem] font-semibold">
+            What we'll work on
+          </h2>
+          <p className="mb-2">Depending on your situation, we may discuss:</p>
+          <ul className="mb-4 list-disc pl-5">
             {WORK_ON.map((w) => (
               <li key={w}>{w}</li>
             ))}
@@ -540,37 +401,31 @@ function StrategySession() {
       </section>
 
       {/* Tiers */}
-      <section className="wrap" style={{ marginTop: 72 }}>
-        <h2
-          style={{
-            textAlign: "center",
-            fontSize: 28,
-            fontWeight: 600,
-            marginBottom: 32,
-          }}
-        >
+      <section className="site-wrap mt-[72px]">
+        <h2 className="mb-8 text-center text-[1.75rem] font-semibold">
           Choose your session
         </h2>
-        <div className="grid2">
+        <div className="mx-auto grid max-w-[900px] grid-cols-1 gap-8 md:grid-cols-2">
           <Tier
             name="Tier 1: Strategy Call"
             price="P 2,999.00"
-            bg={C.teal}
-            color={C.teal}
+            tone="brand"
             blurb="For those who need expert perspective, clarity, and a practical direction."
             items={[
               "60-minute 1:1 Strategy Call",
               "Personalized discussion based on your situation",
               "Strategic recommendations and next steps",
-              "1 Email Check-In based on the timeline we establish during the session",
+              <>
+                <b>1 Email Check-In</b> based on the timeline we establish
+                during the session
+              </>,
             ]}
             note="Best for someone who already has the ability to execute but needs an expert to help make sense of their situation."
           />
           <Tier
             name="Tier 2: Strategy + Clarity Call"
             price="P 6,499.00"
-            bg={C.gold}
-            color={C.gold}
+            tone="gold"
             blurb="For situations that require more than a single conversation."
             items={[
               "60-minute 1:1 Strategy Call",
@@ -582,7 +437,9 @@ function StrategySession() {
               <>
                 <b>Clarity Call</b> for follow-up questions and clarification
               </>,
-              <>1 FREE Email Check-In based on the timeline we establish</>,
+              <>
+                <b>1 FREE Email Check-In</b> based on the timeline we establish
+              </>,
             ]}
             note="This gives you something you can revisit after the session and a structured opportunity to clarify things as you begin implementing the strategy."
           />
@@ -590,50 +447,49 @@ function StrategySession() {
       </section>
 
       {/* How booking works */}
-      <section className="wrap" style={{ marginTop: 72 }}>
-        <h2
-          style={{
-            textAlign: "center",
-            fontSize: 28,
-            fontWeight: 600,
-            marginBottom: 32,
-          }}
-        >
+      <section className="site-wrap mt-[72px]">
+        <h2 className="mb-8 text-center text-[1.75rem] font-semibold">
           How booking works
         </h2>
-        <div className="grid3">
+        <div className="grid grid-cols-1 gap-8 text-center md:grid-cols-3">
           <div>
-            <div style={{ color: C.teal, fontWeight: 700 }}>STEP 1:</div>
-            <h4 style={{ margin: "4px 0" }}>Book your call</h4>
-            <p style={{ fontSize: 14 }}>
+            <PhoneIcon className="mb-3 text-brand" />
+            <div className="font-bold text-brand">STEP 1:</div>
+            <h4 className="my-1 font-semibold">Book your call</h4>
+            <p className="text-sm">
               Choose your preferred package and book your session through
               Calendly.
             </p>
-            <a className="btn" href={CALENDLY} style={{ fontSize: 14 }}>
+            <a
+              className="mt-4 inline-block rounded-[10px] bg-brand px-[22px] py-3 text-sm font-semibold text-white hover:brightness-90"
+              href={CALENDLY}
+            >
               Book at Calendly
             </a>
           </div>
           <div>
-            <div style={{ color: C.gold, fontWeight: 700 }}>STEP 2:</div>
-            <h4 style={{ margin: "4px 0" }}>Confirm your schedule</h4>
-            <p style={{ fontSize: 14 }}>
+            <CalendarIcon className="mb-3 text-gold" />
+            <div className="font-bold text-gold">STEP 2:</div>
+            <h4 className="my-1 font-semibold">Confirm your schedule</h4>
+            <p className="text-sm">
               Once your booking is submitted, you'll receive a Google Calendar
               invite confirming the session.
             </p>
           </div>
           <div>
-            <div style={{ color: "#EF3E2D", fontWeight: 700 }}>STEP 3:</div>
-            <h4 style={{ margin: "4px 0" }}>Show up ready</h4>
-            <p style={{ fontSize: 14 }}>
+            <ChatIcon className="mb-3 text-danger" />
+            <div className="font-bold text-danger">STEP 3:</div>
+            <h4 className="my-1 font-semibold">Show up ready</h4>
+            <p className="text-sm">
               Bring your questions, concerns, experiences, and whatever you've
               been struggling with.
             </p>
           </div>
         </div>
-        <p style={{ textAlign: "center", marginTop: 32 }}>
+        <p className="mt-8 text-center">
           <b>Take notes. Ask questions. Challenge assumptions.</b>
           <br />
-          <span style={{ fontSize: 13 }}>
+          <span className="text-[0.8125rem]">
             The goal isn't just to give you answers. It's to help you understand
             the reasoning behind them.
           </span>
@@ -641,15 +497,8 @@ function StrategySession() {
       </section>
 
       {/* FAQ */}
-      <section className="wrap faq" style={{ marginTop: 72, maxWidth: 800 }}>
-        <h2
-          style={{
-            textAlign: "center",
-            fontSize: 28,
-            fontWeight: 600,
-            marginBottom: 24,
-          }}
-        >
+      <section className="mx-auto mt-[72px] max-w-[800px] px-6">
+        <h2 className="mb-6 text-center text-[1.75rem] font-semibold">
           Frequently Asked Questions
         </h2>
         {FAQ.map(([q, a], i) => (
@@ -657,35 +506,25 @@ function StrategySession() {
             <button
               aria-expanded={open === i}
               onClick={() => setOpen(open === i ? null : i)}
+              className="flex w-full items-center justify-between gap-4 border-b border-[#999] bg-transparent px-1 py-4 text-left text-base font-semibold"
             >
               <span>{q}</span>
-              <span aria-hidden>{open === i ? "−" : "+"}</span>
+              <ToggleIcon open={open === i} />
             </button>
             {open === i && (
-              <div
-                style={{ fontSize: 14, lineHeight: 1.6, padding: "12px 4px" }}
-              >
-                {a}
-              </div>
+              <div className="px-1 py-4 text-sm leading-[1.6]">{a}</div>
             )}
           </div>
         ))}
       </section>
 
       {/* CTA */}
-      <section className="wrap split" style={{ marginTop: 72 }}>
-        <h2
-          style={{
-            fontSize: "clamp(36px,5vw,56px)",
-            fontWeight: 500,
-            lineHeight: 1.1,
-            margin: 0,
-          }}
-        >
+      <section className="site-wrap mt-[72px] grid grid-cols-1 items-center gap-12 md:grid-cols-2">
+        <h2 className="text-[clamp(2.25rem,5vw,3.5rem)] font-medium leading-[1.1]">
           You don't need another random fitness tip
         </h2>
-        <div style={{ fontSize: 15, lineHeight: 1.6 }}>
-          <p>
+        <div className="text-[0.9375rem] leading-[1.6]">
+          <p className="mb-4">
             You need to know which information matters for your situation. So,
             let's make sense of it. :)
           </p>
@@ -693,7 +532,10 @@ function StrategySession() {
             Stop Doing Random Things That Make No Sense. Start Strategizing
             &amp; Execute What Works.
           </p>
-          <a className="btn" href={CALENDLY}>
+          <a
+            className="mt-4 inline-block rounded-[10px] bg-brand px-[22px] py-3 text-base font-semibold text-white hover:brightness-90"
+            href="/booking"
+          >
             Book a session
           </a>
         </div>
@@ -735,16 +577,23 @@ export default function Programs() {
 
   return (
     <>
-      <style>{CSS}</style>
       <Header active="Programs" />
 
-      <div className="wrap">
-        <div className="tabs" role="tablist" aria-label="Programs">
+      <div className="site-wrap">
+        <div
+          className="flex gap-2 overflow-x-auto overflow-y-hidden border-b-2 border-[#e5e5e5]"
+          role="tablist"
+          aria-label="Programs"
+        >
           {TABS.map((t) => (
             <button
               key={t.key}
               role="tab"
-              className="tab"
+              className={`shrink-0 cursor-pointer whitespace-nowrap bg-transparent px-5 py-3.5 text-base font-semibold ${
+                tab === t.key
+                  ? "text-ink shadow-[inset_0_-3px_0_var(--color-brand)]"
+                  : "text-muted"
+              }`}
               aria-selected={tab === t.key}
               onClick={() => choose(t.key)}
             >

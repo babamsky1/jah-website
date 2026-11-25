@@ -1,11 +1,9 @@
 import { Route, Routes } from "react-router-dom";
-import Beyond from "../src/pages/Beyond";
-import Main from "../src/pages/Main";
-import Programs from "../src/pages/Program";
-
-function About() {
-  return <h1 style={{ padding: 40 }}>About (coming soon)</h1>;
-}
+import About from "./pages/About";
+import Beyond from "./pages/Beyond";
+import Booking from "./pages/Booking";
+import Main from "./pages/Main";
+import Programs from "./pages/Program";
 
 function App() {
   return (
@@ -14,6 +12,7 @@ function App() {
       <Route path="/programs" element={<Programs />} />
       <Route path="/beyond" element={<Beyond />} />
       <Route path="/about" element={<About />} />
+      <Route path="/booking" element={<Booking />} />
     </Routes>
   );
 }
